@@ -1,0 +1,787 @@
+1.Selenium Webdriver and other browser driver classes(chromedriver, gecko driver, etc)
+
+SELENIUM WEBDRIVER : Selenium WebDriver is a powerful tool for automating web browsers and testing web applications. It provides a programming interface (API) that allows you to interact with web elements and perform actions such as clicking, typing, and navigating. WebDriver supports multiple web browsers, and each browser requires a specific driver to communicate with Selenium.
+
+some of the browser driver classes commonly used with Selenium:
+1) ChromeDriver
+2) EdgeDriver
+3) GeckoDriver
+4) SafariDriver
+--------------------------------------------------------------------------------------------------------------
+2. Action class and its methods with its usage.
+
+ACTION CLASS : Action class is used to perform complex user interactions with the web elements such as mouse actions and keyboard actions.
+
+MOUSE ACTIONS :
+
+1)doubleClick(WebElement element) : Perform double click on the specified web element.
+
+Actions actions = new Actions(driver);
+WebElement element = driver.findElement(By.id("element Id"));
+actions.doubleClick(element).perform();
+
+2)clickAndHold(WebElement element) : Perform long click on the mouse without releasing.
+
+Actions actions = new Actions(driver);
+WebElement elementToClickAndHold = driver.findElement(By.xpath("your_xpath_here"));
+actions.clickAndHold(elementToClickAndHold).build().perform();
+
+3)dragAndDrop(WebElement source,WebElement destination) : Drags the element from one point to another point.
+
+Actions actions=new Actions(driver);
+WebElement source=driver.findElement(By.id("Element id"));
+WebElement destination=driver.findElement(By.id("Element id"));
+actions.dragAndDrop(source,destination).perform();
+
+4)moveToElement(WebElement element) : Shift the mouse pointer to centre of element.
+
+Actions actions=new Actions(driver);
+WebElement element=driver.findElement(By.id(""));
+actions.moveToElement(element).perform();
+
+5)contextClick(WebElement element) : Perform right click on the mouse.
+
+Actions actions=new Actions(driver);
+WebElement element=driver.findElement(By.id(""));
+actions.contextClick(element).perform();
+
+KEYBOARD ACTIONS:
+
+1)SendKeys()
+2)keyUp() : Perform key release
+3)keyDown() : Perform key press without release.
+
+COMPOSITE ACTIONS:
+1)build() : Create a action.
+2)perform() : Can complete the action.
+--------------------------------------------------------------------------------------------------------------
+3. JavaScriptExecutor and its methods with its usage.
+
+JavaScriptExecutor : Interface which helps to execute javascript through selenium webdriver.
+
+Method : 
+executeScript(String script,object args) : Executes javascript code in the context of the current window.
+
+JavaScriptExecutor js = (JavaScriptExecutor) driver;
+js.executeScript(script,argument);
+ 
+script : JavaScript that need to execute
+Argument : It is arguments to the script
+
+Scrolling Page:
+1)Scroll down page by pixel : js.executeScript("window.scrollBy(0,100),"");
+2)till the element is present : js.executeScript("arguments[0].scrollIntoView();",WebElement);
+3)till end of the page : ja.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+4)To go back to initial position : js.executeScript("window.scrollBy(0,document.body.scrollHeight")); 
+--------------------------------------------------------------------------------------------------------------
+4. Window Handle/Window Handles in Selenium.
+
+1)getWindowHandle() : When your selenium test scripts starts executing, you can get the handle of the current window using the getWindowHandle().
+
+String wh = driver.getWindowHandle();
+
+2)getWindowHandles() : If you have multiple windows or tabs open, you can retrieve handles of all the windows using getWindowHandles().
+
+Set<String> awh = driver.getWindowHandles();
+List<String> lst = new ArrayList(awh);
+String p = lst.get(0);----Parent Window
+String c = lst.get(1);----Child Window
+
+To switch window and perform action
+-----------------------------------
+driver.switchTo().window(p) or (c);
+
+3)Switch between windows : Once you have the window handles, you can switch between windows using the "switchTo().window()".
+
+for(String handle:allWindowHandles){
+    if(!handle.equals(wh)){
+          driver.switchTo().window(handle);
+    }
+}
+--------------------------------------------------------------------------------------------------------------
+5. Handling Iframes, dropdowns ,Alerts, checkboxes, window scroll, calendar elements, Refresh the browser, delete the cookies, close and quit, excel file handling.
+
+Handling Iframes : Use switchTo().frame() method to switch to an iframe by index, name, or WebElement.
+
+Handling Dropdowns : Use Select class to interact with dropdowns. Methods like selectByVisibleText(), selectByValue(), and selectByIndex() are commonly used.
+
+Handling Alerts : Use switchTo().alert() to switch to an alert. Then, use methods like accept(), dismiss(), getText(), etc., to interact with it.
+
+Handling Checkboxes : Use WebElement.click() method to toggle checkbox states.
+
+Window Scroll : Use JavaScriptExecutor to scroll the window using executeScript() method.
+
+Handling Calendar Elements : Use sendKeys() method to send keys like ENTER, ARROW keys to navigate through calendar elements.
+
+Refreshing the Browser : Use driver.navigate().refresh() to refresh the browser.
+
+Deleting Cookies : Use driver.manage().deleteAllCookies() to delete all cookies.
+
+Closing and Quitting : Use driver.close() to close the current window and driver.quit() to quit the entire browser session.
+
+Excel File Handling : Use Apache POI or other libraries to read from and write to Excel files.
+--------------------------------------------------------------------------------------------------------------
+6. Waits in Selenium( Implicit, Explicit and Fluent).
+
+Waits : Wait statements will be used to solve synchronization problem in automation.
+1)Implicit Wait
+2)Explicit Wait
+3)Fluent Wait
+
+1)Implicit Wait : To wait for a certain amount of time before throwing a "No such element" exception.
+
+driver.manage().timeOuts().implicitlyWait(TimeOut,timeUnit.SECONDS);
+
+2)Explicit Wait : It is used to tell the webdriver to wait for certain conditions before throwing an "ElementNotVisibleException".
+
+WebDriverWait wait = new WebDriverWait(WebDriverReference, TimeOut);
+
+3)Fluent Wait : It is used to tell the webdriver to wait for a condition, as well as the frequency with which we want to check the condition before throwing an "ElementNotVisibleException".
+
+FluentWait wait = new FluentWait(driver);
+wait.withTimeOut(timeout,SECONDS);
+wait.pollingEvery(timeout,SECONDS);
+wait.ignoring(Exception.class);
+--------------------------------------------------------------------------------------------------------------
+7. Xpaths and its axes. 
+
+Xpaths : 
+1)Absolute xpath
+2)Relative Xpath
+
+1)Absolute xpath : 
+  --------------
+  * Absolute xpath start from the root node traverse throughtout all the nodes and reaches the element.
+  * Absolute xpath start with single slash "/".
+  * Absolute xpath won't work if there are any changes in webpage.
+
+2)Relative Xpath :
+  --------------
+  * Relative XPath starts from a specific element.
+  * Relative xpath start with double slash "//".
+  * If there are any changes in web page it will work. So, Relative xpath is preferred.
+   
+  //tagname[@attribute name='attribute value']
+
+Xpath Axes : 
+1)Ancestor
+2)Attribute
+3)Child
+4)Descendant
+5)following
+6)following sibling
+7)namespace
+8)parent
+9)preceding
+10)preceding sibling
+11)self
+--------------------------------------------------------------------------------------------------------------
+8. Types of Selenium exceptions and handling the exceptions and how to handle ajax elements. 
+
+Types of Selenium Exceptions:
+----------------------------
+1)NoSuchElementException : Happens when the locators are unable to find element on webpage.
+Sol : 1.Wait command
+      2.Try/Catch to ensure that program flow.
+
+2)TimeOut Exception : Command didn't execute or complete within wait time. TimeOut exception will thrown after page comments fail to load.
+sol : Adjust wait time accordingly.
+
+3)ElementNotVisibleException : Webdriver tries to find an element that is hidden or invisible
+sol : 1.You have locate & correct specific element
+      2.Use explicit wait
+
+4)Webdriver Exception : Exception comes when code is unable to initialize web driver.
+
+5)StaleElementReferenceException : This exception occurs when the referenced element is no longer attached to the DOM. 
+sol : Handle it by re-locating the element or refreshing the page if necessary.
+
+6)ElementNotInteractableException :This exception occurs when WebDriver attempts to interact with an element that cannot be interacted with, such as a disabled element.
+sol : Handle it by verifying the element's state before interacting with it.
+
+Ajax Elements:
+-------------
+ * AJAX stands for Asynchronous JavaScript & XML, and it allows the Web page to retrieve small amounts of data from the server without reloading the entire page.
+ * It is used for creating fast and dynamic web pages.
+ * It will updates the part/s of a web page without reloading the whole page. 
+ * Some of the famous applications that uses AJAX technique are Gmail, Google Maps, Facebook, Youtube, etc.
+
+For example, when you click on submit button, JavaScript will make a request to the server, interpret the result and update the current screen without reloading the webpage.
+--------------------------------------------------------------------------------------------------------------
+9. Page Object Model and Page Factory Class in Selenium.
+
+Page Object Model:
+-----------------
+* Page Object Model also known as POM. It is a design pattern in selenium that creates an object repository for storing all web elements.
+* It helps code duplication and improve test cases maintanance.
+* POM promotes code reusability, maintainability, and readability of automation scripts.
+
+Example of a page object model: 
+------------------------------
+public class LoginPage {
+    private WebDriver driver;
+    private By usernameField = By.id("username");
+    private By passwordField = By.id("password");
+    private By loginButton = By.id("loginBtn");
+
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public void enterUsername(String username) {
+        driver.findElement(usernameField).sendKeys(username);
+    }
+
+    public void enterPassword(String password) {
+        driver.findElement(passwordField).sendKeys(password);
+    }
+
+    public void clickLoginButton() {
+        driver.findElement(loginButton).click();
+    }
+}
+
+Page Factory:
+------------
+* Page Factory is an extension of the Page Object Model that provides a way to initialize web elements in the page classes using annotations.
+* It uses the @FindBy annotation to locate web elements and initialize them.
+* Page Factory simplifies the initialization of web elements and makes the page classes more readable and maintainable. 
+
+Example of page factory:
+-----------------------
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class LoginPage {
+    private WebDriver driver;
+
+    @FindBy(id = "username")
+    private WebElement usernameField;
+
+    @FindBy(id = "password")
+    private WebElement passwordField;
+
+    @FindBy(id = "loginBtn")
+    private WebElement loginButton;
+
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    public void enterUsername(String username) {
+        usernameField.sendKeys(username);
+    }
+
+    public void enterPassword(String password) {
+        passwordField.sendKeys(password);
+    }
+
+    public void clickLoginButton() {
+        loginButton.click();
+    }
+}
+--------------------------------------------------------------------------------------------------------------
+10. Assertions(Hard Assert and Soft Assert).
+
+Hard Assert:
+----------- 
+* If a Hard Assert fails, the test case immediately stops executing, and the test method is marked as failed.
+* Access through Assert class.
+* All methods are static.
+
+Assert.assertEquals(1,2);-----It is failed than below code will not be executed.
+System.out.println("hi");
+Assert.assertEquals(1,1);
+
+Soft Assert:
+-----------
+* If a Soft Assert fails, the test case continues executing, and all assertions are evaluated before the test method completes.
+* Access through "SoftAssert" object
+
+SoftAssert sa = new SoftAssert();
+sa.assertEquals(1,2);
+System.out.println("hi");-----This will print
+sa.assertAll();-----------This is mandatory. If this is not added, the test will get passed in soft assertion.
+--------------------------------------------------------------------------------------------------------------
+11. Robot class and its uses in downloading the uploading the file.
+
+Robot class : The robot class in selenium is a java based utility class that provides a way to simulate keyboard and mouse events on the screen.
+
+Methods : 1)keyPress(int keycode)
+          2)keyRelease(int keycode)
+          3)mouseMove(int x,int y)
+          4)mousePress(int buttons).
+
+Robot robot = new Robot();
+robot.keyPress(KeyEvent.VK_ENTER);
+
+File Upload:
+-----------
+* Use Robot class to navigate through the file upload dialog and enter the file path.
+* Simulate keyboard events such as pressing Enter or clicking the Open button.
+
+// Locate the file upload input element
+        WebElement fileUploadInput = driver.findElement(By.id("file-upload"));
+        
+        // Click on the file upload input to trigger the file upload dialog
+        fileUploadInput.click();
+
+File Download:
+-------------
+* Use Robot class to navigate through the browser's download dialog.
+* Simulate keyboard events such as pressing Enter or specifying the file name/location.
+
+
+
+
+
+
+Actions CLass:
+_______________
+for mouseOverActions we can use aCtion class.
+
+
+declararion:
+Actions a = new Actions(driver);
+
+different methods in Actions class:
+1)to move mousepoint or curser to WebElement
+ 
+Actions a = new Actions(driver);
+a.moveToElement(WebElement);
+//code
+WebElement A =driver.findElement(By.xpath(""));
+ Actions a = new Actions(driver);
+a.moveToElement(A).perform();
+a.moveToElement(A).build().perform();
+
+2)Drag and Drop
+
+a.dragAndDrop(sou,tar).build().perform();
+Actions a =new Actions(driver);
+WebElement sou =  driver.findElement(By.xpath(""));
+WebElement tar =  driver.findElement(By.xpath(""));
+
+
+Actions a = new Actions(driver);
+a.dragAndDrop(sou,tar).build().perform();
+3)DoubleClick
+
+a.doubleClick().perform();Actions a =new Actions(driver);
+WebElement sou =  driver.findElement(By.xpath(""));
+
+a.doubleClick(sou).perform();
+
+4)RightClick
+
+a.contextClick(webelemetn).perform();
+
+Actions a =new Actions(driver);
+WebElement sou =  driver.findElement(By.xpath(""));
+
+a.contextClick().perofrm();
+
+
+5)to pass the values in the text box
+
+
+a.sendKeys(sou,sequnce);
+a.sendKeys(char sequnce);
+
+Actions a =new Actions(driver);
+WebElement sou =  driver.findElement(By.xpath(""));
+
+
+ROBOT Class
+___________
+
+Robot is a class is used to perform the keyboard action in java
+
+Syntax:Robot r  =  new Robot();
+
+//For using down key
+r.KeyPress(KeyEvent.VK_DOWN);
+r.KeyRelease(KetEvent.VK_DOWN);
+//Forn using UP key
+r.KeyPress(KeyEvent.VK_UP);
+r.KeyRelease(KeyEvent.VK_UP);
+//For using ENTER Key
+r.KeyPress(KeyEvent.VK_ENTER);
+r.KeyPress(KeyEvent.VK_ENTER);
+
+
+ALERTS:
+______
+
+Alert is interface,it is a small message box displayed on the screen to give some infirmation to the user.alret and webpage are different,alret has no locators,when alert appeared on displayed first we need to switch into the alret to handle the alert then only user can perform the next opeartion in the webpage.
+
+To switch into the alert:
+  Alert r = WebDriver.switchTo().alert();
+
+Types of Alert:
+1)simple alert:contains only ok button
+2)confirm alert:contains both ok and cancel button
+3)Promt alert:contains text box with ok and cancel button
+
+r.accept(); --> to ACecpt thr alert
+r.dismiss();---->to dismiss the alert
+r.sendKeys();---->to insert the values(First we will send kend keys and then we click accept like Ok button)
+r.getText(); ---> to print the text in the alert 
+
+
+JAVASCRIPT EXECUTOR:
+___________________
+
+1)JavaScriptExecutor is an interface that helps to execute JavaScript thorugh selenium Webdriver.
+2)In Selenium Webdriver locators like Xpath,Css,etc are used to identify and perform operation on webpage.
+3)in case these locators do not work  ,you can use javascriptexecuor to perform a desired opeation on a web element.
+
+To implement JavaScript;
+1)Type Casting 
+   JavaScriptExecutor js = (JavascriptExecutor)driver;
+
+JavaScript codes:
+
+argument[0].setAttribute('value','input value')  --->to pass any input test in text box
+return arguments[0].getAttribute('value') ---> retrive the values of the user entered text
+arguments[0].click(); ----> For button Click
+arguments[0].scrollIntoView(false) -- > Scroll down    js.execueScript("window.scrollBy(0,500)");
+arguments[0].scrollIntoView(true) ---> Scroll Up
+window.ScrollBy(0,500);
+
+PRogram:
+System.setProperty("webdriver.chrome.driver","Path");
+
+
+WebDriver driver = new ChromeDriver();
+driver.get("url");
+
+JavascriptExecutor js = (JavascriptExecutor)driver;
+Webelement e = driver.findElement(By.id("sfr"));
+
+//pass the values in the text box suing java script
+
+js.executeScript("arguments[0].setAttribute('value',"naveenkumar")",e);
+
+
+executor.executeScript("document.getElementById("textbox_id").value='new value';);
+
+
+//Retrive the user entered text in the webelemtn
+
+
+Object object=js.executeScript(return "arguments[0].getAttribute('value')",e);
+String s1 = (String)object;
+sop(s1);
+//Clicking javascript button
+
+js.executeScript("arguments[0].click()",e);
+
+//scroll up
+js.executeScript("arguments[0].scrollIntoView(false)",e);
+
+
+//scroll down
+js.executeScript("arguments[0].scrollIntoView(true)",e);
+
+TAKESSCREENSHOT:
+_________________
+
+TakesScreenshot  Interface
+
+TakesScreenshot ts=(TakesScreenshot)WebDriverRef.Name;
+TakesScreenshot ts=(TakesScreenshot)driver;
+Methods
+File src = ts.getScreenshotAs(OutputType.FILE);
+File  Return type for getScreenshotAs( );
+Steps:
+1. Typecast
+2. Store screenshot in default
+3. Create a screenshot
+
+The output format of the screenshot will be Base64, Bytes, Class, FILE.
+In order to store the screenshot in our project folder
+1. After taking the scerrnshot, create a file class
+2. Create a folder in the package and give the path of the folder in the File class
+3. In the path at last add the name of the screen shot.
+4. Use FileUtils.copyFile(source, destination); to copy src file and past it in the desired
+project folder. Source  ref name of getScreenshotAs( ).
+5. copyFile() is a static method in the FileUtils class.
+
+
+exapmle:
+
+
+System.setProperty("webdriver.chrome.driver","path");
+Webdriver driver = new ChromeDriver();
+
+
+driver.get("URL");
+
+//Typecasting
+
+TakescreenShot ts = (TakescreenShot)driver;
+
+//takes Screenshot
+
+File sou = ts.getSceenshotAs(OutputType.FILE);
+
+//COPY THE FILE IN SOURCE AND PASTE INTLO THEDESTINATION FOLDER
+
+File dest = new File("path of the location of path");
+FileUtils.copyFile(sou,dest);
+
+
+VISIBLITY OF WEBELEMENT:
+_______________________
+
+
+To check visibility of the WebElements
+
+isEnabled() - method to check whether the web element is enabled or not.
+isDisplayed() - method to check whether the web element is displayed(present) or not
+isSelected() -method to check whether the web element is selectable or not
+
+It is widely used in radio button, dropdown, checkbox
+
+PRogram:
+System.setProperty("webdriver.chrome.driver","Path");
+
+
+WebDriver driver = new ChromeDriver();
+driver.get("url");
+
+WebElement dispaled = driver.findelement(By.xpath("login"));
+
+boolean isdipsled  = dispaleed.isDisplyed();
+ sop(isdipsled);
+
+//enabled
+
+ boolean isEnable = dispaled.isEnable();
+sop(enabled);
+
+
+//isSelected
+
+
+WebElement gender = driver.findElement(By.xpath("gender"));
+
+gender.click();
+
+boolean selected2 = gender.isSelected();
+sop(selected2);
+
+
+FRAMES:
+________
+html embedded inside another html
+When any locator is placed inside the frame we cannot directly access the locator.
+First we need to switch into the frame, then only we can access frame.
+To switch into frame
+First we have to check frame is available in DOM or not.
+R + click  view frame source
+Or
+Inspectcntrl + F //iframe or //frameset etc.
+Methods to switch into frame (method-overloading)
+driver.switchTo().frame(string id);
+driver.switchTo().frame(string name);
+driver.switchTo().frame(web element);
+driver.switchTo().frame(index);
+Methods to switch out of frame
+To switch from current frame to immediate parent frame (frame inside frame concept)
+driver.switchTo().parentframe();
+To switch the control from any frame to main.
+driver.switchTo().defaultContent();
+
+WINDOWS HANDLING
+_________________
+Whenever we execute any program it can access current window webelement only.
+When we have multiple windows to switch control between windows we go for
+windows handling.
+To switch into other window
+driver.switchTo().window(String URL)
+driver.switchTo().window(String title)
+driver.switchTo().window(Window ID)
+To find window ID
+Parent id:
+driver.getWindowHandle()  String
+Child id:
+driver.getWindowHandles()  Set<String>
+
+                WebDriverManager.chromedriver().setup();
+		WebDriver driver = new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+		driver.manage().window().maximize();
+		Thread.sleep(5000);
+		driver.findElement(By.xpath("(//a[@target='_blank'])[5]")).click(); //a[normalize-space()='OrangeHRM, Inc']
+		//Approach 1
+		Set<String> windowIds = driver.getWindowHandles();
+		Thread.sleep(5000);
+		List<String> windowsList = new ArrayList(windowIds);
+		
+		
+		String parentwindow = windowsList.get(0);
+		String childwindoe = windowsList.get(1);
+		//Swtich to child window
+		driver.switchTo().window(childwindoe);
+		Thread.sleep(5000);
+		driver.findElement(By.linkText("Contact Sales")).click();
+		Thread.sleep(5000);
+		//Swirch to parent window
+		driver.switchTo().window(parentwindow);
+		Thread.sleep(5000);
+		
+		driver.findElement(By.name("username")).sendKeys("frffr");
+            //approach 2
+		for(String wind:windowIds) {
+			String title = driver.switchTo().window(wind).getTitle();
+			if(title.equals("OrangeHRM HR Software | Free & Open Source HR Software | HRMS | HRIS | OrangeHRM")) {
+				driver.findElement(By.linkText("Contact Sales")).click();
+			}
+		}
+		//Closing the winodes
+		for(String wind:windowIds) {
+			String title = driver.switchTo().window(wind).getTitle();
+			if(title.equals("OrangeHRM HR Software | Free & Open Source HR Software | HRMS | HRIS | OrangeHRM")) {
+				driver.close();
+			}
+DROPDOWN:
+_________
+Whenever dropdown takes place we need to go for Select class.
+Select s=new Select(WebElement);
+
+s.selectByIndex(2);
+s.selectByValue();
+s.selectByVisibleText("NAveen");
+
+
+HighLighting Text:
+__________________
+                WebDriverManager.chromedriver().setup();
+		WebDriver driver = new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+		driver.manage().window().maximize();
+		Thread.sleep(5000);
+		WebElement highlight = driver.findElement(By.xpath("(//a[@target='_blank'])[5]")).click(); //a[normalize-space()='OrangeHRM, Inc'];
+                JavascriptExecutor js = (JavascriptExecutor)driver;
+                js.executorScript("arguemnts[0].getAttrubute('style','background:yellow')",highlight);
+
+NAVIGATION COMMANDS:
+____________________
+
+                WebDriverManager.chromedriver().setup();
+		WebDriver driver = new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+		driver.manage().window().maximize();     
+               driver.navigate().to("url");//navigate to another url
+               driver.navigate().refresh();//refesh the url
+               driver.navigate().forward();
+               driver.navigate().backward();
+
+WAITS:
+_______
+Selenium Waits are  commands that help wait for a certain condition to happen before proceeding further in the code
+
+
+1 Implicit Wait
+________________
+Whenever we need to find webelement in webpage, if the webelement is not present,
+before throwing the exception it will wait for the given time. When the webelement appeared
+the program will resume and it wont wait for the time to complete
+If it could not find the webelement it will throw TimeOutException.
+It is applicable for all the locators.
+Default polling time is 250 ms(milli seconds)[every 250ms it will go and check the
+webelement found or not)
+syntax:
+_______
+driver.manage().timeouts().implicitlyWait(50,TimeUnit.SECONDS);
+	
+driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+
+2)Explicit Wait:
+_______________
+It is applicable for particular locator/ condition.
+For the given condition to be satisfied or for finding the webelement till that we can
+make our program to wait.
+Types
+1. WebDriverWait
+2. FluentWait
+Wait (Wait is the interface)
+FluentWait implements Wait
+WebDriverWait extends FluentWait
+All the methods in fluent wait will also be in WebDriverWait
+2.2.1 WebDriverWait
+Whenever the time interval we give it will take only in SECONDS (so we cannot
+overload).
+It cannot handle TimeOutException.
+Default polling time is 500 ms
+//syntax
+WebDriverWait w = new WebDriverWait(driver, 10);
+
+w.until(ExpectedConditions.elementToBeClickable(By.name("id"));
+w.until(ExpecctedConditons.visibilityOfElementLocated(Loc));
+
+
+3)Fluent Wait:
+______________
+We can give the time interval in terms of MILLISECONDS, MACROSECONDS etc.
+It can handle TimeOutException.(because here we have additional method)
+We can set the polling time
+Syntax:
+
+FluentWait<WebDriver> waits = new FluentWait<WebDriver>(driver)
+                              .withTimeOut(Duration.ofSeconds(10))
+                              .pollingEvery(Duration.ofSeconds(5))
+                              .ignoring(NoSuchElementException.class)//ignoring(Throwable.class)
+                              .until(ExpectedCondtions.visibilityOfElementLocated(element));
+
+
+
+File Uploading:
+_______________
+
+SelectionString selectionstring  = new SelectString(String);
+ToolKit.getDefaultToolKit().getSystemKeyclipboard().setcontents(selectionstring,null);
+
+
+Robot robot = new Robot();
+robot.KeyPress(KeyEvent.VK_CONTROL);
+robot.KeyRelese(KeyEvent.VK_CONTROL);
+
+robot.KeyPress(KeyEvent.VK_V);
+robot.KeyRelese(KeyEvent.VK_V);
+
+robot.KeyPress(KeyEvent.VK_ENTER);
+robot.KeyRelese(KeyEvent.VK_ENTER);
+
+
+AJAX is a technique that allows a web page to retrieve small chunks of data from a web server in an asynchronous manner without having to reload the entire page every time. Using AJAX, you can create dynamic, fast, and highly interactive web pages based on asynchronous calls exchanged in the background.
+
+
+file:
+
+file is unit to store some infomation in our operation system
+
+
+Page object model:
+__________________
+page object model also known as POM,is a design pattern in selenium taht created object repository for storing web elements.it is useful for reducing code duplication and imporve the test case maintance.
+
+  To simplify in the page object framework we crete class file for each web page,this class file consists of different web elemtns present in the web page,morevoer test scripts then use the elemetns to perform the different actions.
+
+Advantages:
+_________
+
+makes code maintainable
+makes code readable
+makes code reusable
+
+Compatibility testing: is a type of testing that examines and compares functionality over multiple browsers, devices, platforms, and OS to recognize potential discrepancies. Performing compatibility testing verifies that your product/software works efficiently in its intended environments.
+
+ 
